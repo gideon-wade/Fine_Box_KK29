@@ -45,13 +45,13 @@ def histogram_most_frequent(df):
 def update_yearly_overview(df):
     print("Want to add this data to the yearly overview? ")
     answer = input("Type in 'y' to add and 'n' to not add: ")
-    headers = ['Room nr., Total fee, Kitchen duty, Minors, Kitchen cleaning, Wok pan/small pot, Toaster']
+    headers = ['Room nr.,Total fee,Kitchen duty,Minors,Kitchen cleaning,Wok pan/small pot,Toaster']
     df_yearly = pd.read_csv('Data_files/Fine_Box_stats_YEARLY.csv', sep=",")
     print(df['Total fee'][0])
     print(df_yearly['Total fee'][0])
     if answer == "y":
         # open the file in the write mode
-        with open('Data_files/Fine_Box_stats_YEARLY.csv', 'w') as f:
+        with open('Data_files/Fine_Box_stats_YEARLY2.csv', 'w') as f:
             # create the csv writer
             writer = csv.writer(f)
             rows, cols = (17, 6)
@@ -82,16 +82,9 @@ def update_yearly_overview(df):
                         string += str(matrix[x][y])
                     else:
                         string += str(matrix[x][y]) + ","
-                list_string = [string]
+                list_string = [str(x + 1) + "," + string]
                 writer.writerow(list_string)
                 string = ""
-        for x in range(rows):
-            df_yearly['Total fee'][x] += df['Total fee'][x]
-            df_yearly['Kitchen duty'][x] += df['Kitchen duty'][x]
-            df_yearly['Minors'][x] += df['Minors'][x]
-            df_yearly['Kitchen cleaning'][x] += df['Kitchen cleaning'][x]
-            df_yearly['Wok pan/small pot'][x] += df['Wok pan/small pot'][x]
-            df_yearly['Toaster'][x] += df['Toaster'][x]
 
         print("Did you regret?")
         answer = input("'y' for yes: ")
@@ -101,6 +94,11 @@ def update_yearly_overview(df):
             print("Yearly overview has been updated")
     else:
         print("Run program again to update the data.")
+
+
+def copy_csv(filename):
+    df = pd.read_csv(filename + '.csv')
+    df.to_csv('copy_of_' + filename + '.csv')
 
 
 def regret(df_yearly, df):
