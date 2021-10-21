@@ -82,8 +82,6 @@ def update_yearly_overview(df):
                             matrix[y][x] = df['Wok pan/small pot'][y] + semester_dataframe['Wok pan/small pot'][y]
                         if x == 6:
                             matrix[y][x] = df['Toaster'][y] + semester_dataframe['Toaster'][y]
-
-            print(matrix)
             writer.writerows(matrix)
 
         print("Did you regret?")
