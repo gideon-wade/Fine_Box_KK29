@@ -100,11 +100,6 @@ def update_yearly_overview(df):
             regret(semester_dataframe, df)
         else:
             print("Data of semester has been updated.\n")
-            answer = input("Do you want to show data from semester? ")
-            if answer == "y":
-                isWeekly = False
-                df_semester = pd.read_csv(file_name_yearly + str(updates) + '.csv', sep=",")
-                histogram_totals(df_semester, isWeekly)
     else:
         print("Run program again to update the data.")
 
