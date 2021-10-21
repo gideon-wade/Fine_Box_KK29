@@ -1,32 +1,38 @@
-import pandas as pd
-import matplotlib.pyplot as plt
 import csv
-import os, os.path
+import os
+import os.path
+
+import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def run_program():
     df = pd.read_csv('Data_files/Fine_Box_stats.csv', sep=",")
-    histogram_totals(df)
+    isWeekly = True
+    histogram_totals(df, isWeekly)
 
 
-def histogram_totals(df):
+def histogram_totals(df, isWeekly):
     plt.bar(df['Room nr.'], df['Total fee'], color="#b21d1d")
     plt.xticks([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17])
     plt.ylabel('DKK')
     plt.xlabel('Room numbers')
-    # PATH TO YOUR /plotWeekX DIRECTORY
-    plt.savefig("plotsWeekX/residents'_payments.png")
+    if not isWeekly:
+        plt.title("Overview of Semester")
+    else:
+        # PATH TO YOUR /plotWeekX DIRECTORY
+        plt.savefig("plotsWeekX/residents'_payments.png")
     plt.show()
-    histogram_most_frequent(df)
+    histogram_most_frequent(df, isWeekly)
 
 
-def histogram_most_frequent(df):
+def histogram_most_frequent(df, isWeekly):
     Rules = ['Kitchen duty', 'Minors', 'Kitchen cleaning', 'Wok pan/small pot', 'Toaster']
-    Kd_total = 0
-    M_total = 0
-    Kc_total = 0
-    W_total = 0
-    T_total = 0
+    Kd_total, M_total, Kc_total, W_total, T_total = (0, 0, 0, 0, 0)
+    #M_total = 0
+    #Kc_total = 0
+    #W_total = 0
+    #T_total = 0
     for x in range(17):
         Kd_total += df['Kitchen duty'][x]
         M_total += df['Minors'][x]
@@ -36,14 +42,18 @@ def histogram_most_frequent(df):
     frequency = [Kd_total, M_total, Kc_total, W_total, T_total]
     plt.bar(Rules, frequency, color="#e29316")
     plt.xticks(rotation=13)
-    # PATH TO YOUR /plotWeekX DIRECTORY
-    plt.savefig("plotsWeekX/most_frequent.png")
-    plt.show()
-    update_yearly_overview(df)
+    if not isWeekly:
+        plt.title("Overview of Semester")
+        plt.show()
+    else:
+        # PATH TO YOUR /plotWeekX DIRECTORY
+        plt.savefig("plotsWeekX/most_frequent.png")
+        plt.show()
+        update_yearly_overview(df)
 
 
 def update_yearly_overview(df):
-    print("Want to add this data to the semester overview?")
+    print("Want to add this data to the semester data?")
     answer = input("Type in 'y' to add and 'n' to not add: ")
     headers = ['Room nr.', 'Total fee', 'Kitchen duty', 'Minors', 'Kitchen cleaning', 'Wok pan/small pot', 'Toaster']
     file_name_yearly = 'Data_files/Semester_Stats/Fine_Box_stats_Semester_update_'
@@ -89,7 +99,13 @@ def update_yearly_overview(df):
         if answer == "y":
             regret(semester_dataframe, df)
         else:
-            print("Yearly overview has been updated")
+            print("Data of semester has been updated.\n")
+            answer = input("Do you want to show data from semester? ")
+            if answer == "y":
+                isWeekly = False
+                df_semester = pd.read_csv(file_name_yearly + str(updates) + '.csv', sep=",")
+                histogram_totals(df_semester, isWeekly)
+
     else:
         print("Run program again to update the data.")
 
@@ -110,4 +126,12 @@ def get_file_quantity(Directory):
 
 
 if __name__ == "__main__":
-    run_program()
+    print("Want to plot at the Semester data?")
+    answer = input("'y' or 'n': ")
+    if answer == "y":
+        updates = get_file_quantity('Data_files/Semester_Stats/')
+        semester_dataframe = pd.read_csv('Data_files/Semester_Stats/Fine_Box_stats_Semester_update_' + str(updates - 1) + '.csv', sep=",")
+        is_Weekly = False
+        histogram_totals(semester_dataframe, is_Weekly)
+    else:
+        run_program()
