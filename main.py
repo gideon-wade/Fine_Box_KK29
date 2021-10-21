@@ -109,11 +109,6 @@ def update_yearly_overview(df):
         print("Run program again to update the data.")
 
 
-def copy_csv(filename):
-    df = pd.read_csv(filename)
-    df.to_csv('copy_of_' + filename + '.csv')
-
-
 def regret(df_yearly, df):
     print("Regret.")
 
@@ -126,12 +121,12 @@ def get_file_quantity(Directory):
 
 def update_monthly_data(df):
     headers = ['Room nr.', 'Total fee', 'Kitchen duty', 'Minors', 'Kitchen cleaning', 'Wok pan/small pot', 'Toaster']
-    file_name_monthly = 'Data_files/Monthly_Stats/Fine_Box_stats_Semester_update_'
+    file_name_monthly = 'Data_files/Monthly_Stats/Fine_Box_stats_Month_update_'
     updates = get_file_quantity('Data_files/Monthly_Stats/')
     print("Updates: " + str(updates))
     monthly_dataframe = pd.read_csv(file_name_monthly + str(updates - 1) + '.csv', sep=",")
     # open the file in the write mode
-    with open(monthly_dataframe + str(updates) + '.csv', 'w') as f:
+    with open(file_name_monthly + str(updates) + '.csv', 'w') as f:
         # create the csv writer
         writer = csv.writer(f)
         rows, cols = (17, 7)
