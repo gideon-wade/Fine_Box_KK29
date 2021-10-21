@@ -29,10 +29,10 @@ def histogram_totals(df, isWeekly):
 def histogram_most_frequent(df, isWeekly):
     Rules = ['Kitchen duty', 'Minors', 'Kitchen cleaning', 'Wok pan/small pot', 'Toaster']
     Kd_total, M_total, Kc_total, W_total, T_total = (0, 0, 0, 0, 0)
-    #M_total = 0
-    #Kc_total = 0
-    #W_total = 0
-    #T_total = 0
+    # M_total = 0
+    # Kc_total = 0
+    # W_total = 0
+    # T_total = 0
     for x in range(17):
         Kd_total += df['Kitchen duty'][x]
         M_total += df['Minors'][x]
@@ -159,6 +159,14 @@ if __name__ == "__main__":
                                          '_update_' + str(ups - 1) + '.csv', sep=",")
         is_Weekly = False
         histogram_totals(semester_dataframe, is_Weekly)
+    print("Want to plot at the Monthly data?")
+    ans = input("'y' or 'n': ")
+    if ans == "y":
+        ups = get_file_quantity('Data_files/Monthly_Stats/')
+        monthly_dataframe = pd.read_csv('Data_files/Monthly_Stats/Fine_Box_stats_Month_'
+                                        'update_' + str(ups - 1) + '.csv', sep=",")
+        is_Weekly = False
+        histogram_totals(monthly_dataframe, is_Weekly)
     else:
         print("Proceeding to plot data...")
         run_program()
