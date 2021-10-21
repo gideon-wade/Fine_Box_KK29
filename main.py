@@ -9,24 +9,27 @@ import pandas as pd
 def run_program():
     df = pd.read_csv('Data_files/Fine_Box_stats.csv', sep=",")
     isWeekly = True
-    histogram_totals(df, isWeekly)
+    is_Monthly = False
+    histogram_totals(df, isWeekly, is_Monthly)
 
 
-def histogram_totals(df, isWeekly):
+def histogram_totals(df, isWeekly, is_Monthly):
     plt.bar(df['Room nr.'], df['Total fee'], color="#b21d1d")
     plt.xticks([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17])
     plt.ylabel('DKK')
     plt.xlabel('Room numbers')
-    if not isWeekly:
-        plt.title("Overview of Semester")
+    if not isWeekly and not is_Monthly:
+        plt.title("Overview of the Semester")
+    elif not isWeekly and is_Monthly:
+        plt.title("Overview of the Month")
     else:
         # PATH TO YOUR /plotWeekX DIRECTORY
         plt.savefig("plotsWeekX/residents'_payments.png")
     plt.show()
-    histogram_most_frequent(df, isWeekly)
+    histogram_most_frequent(df, isWeekly, is_Monthly)
 
 
-def histogram_most_frequent(df, isWeekly):
+def histogram_most_frequent(df, isWeekly, is_Monthly):
     Rules = ['Kitchen duty', 'Minors', 'Kitchen cleaning', 'Wok pan/small pot', 'Toaster']
     Kd_total, M_total, Kc_total, W_total, T_total = (0, 0, 0, 0, 0)
     # M_total = 0
@@ -42,13 +45,17 @@ def histogram_most_frequent(df, isWeekly):
     frequency = [Kd_total, M_total, Kc_total, W_total, T_total]
     plt.bar(Rules, frequency, color="#e29316")
     plt.xticks(rotation=13)
-    if not isWeekly:
-        plt.title("Overview of Semester")
+    if not isWeekly and not is_Monthly:
+        plt.title("Overview of the Semester")
+        plt.show()
+    elif not isWeekly and is_Monthly:
+        plt.title("Overview of the Month")
         plt.show()
     else:
         # PATH TO YOUR /plotWeekX DIRECTORY
         plt.savefig("plotsWeekX/most_frequent.png")
         plt.show()
+        update_monthly_data(df)
         update_yearly_overview(df)
 
 
@@ -158,15 +165,17 @@ if __name__ == "__main__":
         semester_dataframe = pd.read_csv('Data_files/Semester_Stats/Fine_Box_stats_Semester'
                                          '_update_' + str(ups - 1) + '.csv', sep=",")
         is_Weekly = False
-        histogram_totals(semester_dataframe, is_Weekly)
+        is_Monthly = False
+        histogram_totals(semester_dataframe, is_Weekly, is_Monthly)
     print("Want to plot at the Monthly data?")
     ans = input("'y' or 'n': ")
     if ans == "y":
         ups = get_file_quantity('Data_files/Monthly_Stats/')
-        monthly_dataframe = pd.read_csv('Data_files/Monthly_Stats/Fine_Box_stats_Month_'
+        monthly_df = pd.read_csv('Data_files/Monthly_Stats/Fine_Box_stats_Month_'
                                         'update_' + str(ups - 1) + '.csv', sep=",")
         is_Weekly = False
-        histogram_totals(monthly_dataframe, is_Weekly)
+        is_Monthly = True
+        histogram_totals(monthly_df, is_Weekly, is_Monthly)
     else:
-        print("Proceeding to plot data...")
+        print("Proceeding to plot data weekly data...")
         run_program()
