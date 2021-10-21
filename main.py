@@ -105,7 +105,6 @@ def update_yearly_overview(df):
                 isWeekly = False
                 df_semester = pd.read_csv(file_name_yearly + str(updates) + '.csv', sep=",")
                 histogram_totals(df_semester, isWeekly)
-
     else:
         print("Run program again to update the data.")
 
@@ -125,13 +124,51 @@ def get_file_quantity(Directory):
     return file_count
 
 
+def update_monthly_data(df):
+    headers = ['Room nr.', 'Total fee', 'Kitchen duty', 'Minors', 'Kitchen cleaning', 'Wok pan/small pot', 'Toaster']
+    file_name_monthly = 'Data_files/Monthly_Stats/Fine_Box_stats_Semester_update_'
+    updates = get_file_quantity('Data_files/Monthly_Stats/')
+    print("Updates: " + str(updates))
+    monthly_dataframe = pd.read_csv(file_name_monthly + str(updates - 1) + '.csv', sep=",")
+    # open the file in the write mode
+    with open(monthly_dataframe + str(updates) + '.csv', 'w') as f:
+        # create the csv writer
+        writer = csv.writer(f)
+        rows, cols = (17, 7)
+        matrix = [[0] * cols for _ in range(rows)]
+
+        # write a header-row to the csv file
+        writer.writerow(headers)
+
+        for x in range(cols):
+            for y in range(rows):
+                if x == 0:
+                    matrix[y][x] = y + 1
+                else:
+                    if x == 1:
+                        matrix[y][x] = df['Total fee'][y] + monthly_dataframe['Total fee'][y]
+                    if x == 2:
+                        matrix[y][x] = df['Kitchen duty'][y] + monthly_dataframe['Kitchen duty'][y]
+                    if x == 3:
+                        matrix[y][x] = df['Minors'][y] + monthly_dataframe['Minors'][y]
+                    if x == 4:
+                        matrix[y][x] = df['Kitchen cleaning'][y] + monthly_dataframe['Kitchen cleaning'][y]
+                    if x == 5:
+                        matrix[y][x] = df['Wok pan/small pot'][y] + monthly_dataframe['Wok pan/small pot'][y]
+                    if x == 6:
+                        matrix[y][x] = df['Toaster'][y] + monthly_dataframe['Toaster'][y]
+        writer.writerows(matrix)
+
+
 if __name__ == "__main__":
     print("Want to plot at the Semester data?")
-    answer = input("'y' or 'n': ")
-    if answer == "y":
-        updates = get_file_quantity('Data_files/Semester_Stats/')
-        semester_dataframe = pd.read_csv('Data_files/Semester_Stats/Fine_Box_stats_Semester_update_' + str(updates - 1) + '.csv', sep=",")
+    ans = input("'y' or 'n': ")
+    if ans == "y":
+        ups = get_file_quantity('Data_files/Semester_Stats/')
+        semester_dataframe = pd.read_csv('Data_files/Semester_Stats/Fine_Box_stats_Semester'
+                                         '_update_' + str(ups - 1) + '.csv', sep=",")
         is_Weekly = False
         histogram_totals(semester_dataframe, is_Weekly)
     else:
+        print("Proceeding to plot data...")
         run_program()
