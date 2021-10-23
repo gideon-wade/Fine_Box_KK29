@@ -34,10 +34,6 @@ def histogram_totals(df, isWeekly, is_Monthly):
 def histogram_most_frequent(df, isWeekly, is_Monthly):
     Rules = ['Kitchen duty', 'Minors', 'Kitchen cleaning', 'Wok pan/small pot', 'Toaster']
     Kd_total, M_total, Kc_total, W_total, T_total = (0, 0, 0, 0, 0)
-    # M_total = 0
-    # Kc_total = 0
-    # W_total = 0
-    # T_total = 0
     for x in range(17):
         Kd_total += df['Kitchen duty'][x]
         M_total += df['Minors'][x]
@@ -69,12 +65,7 @@ def update_yearly_overview(df, answer):
     headers = ['Room nr.', 'Total fee', 'Kitchen duty', 'Minors', 'Kitchen cleaning', 'Wok pan/small pot', 'Toaster']
     file_name_yearly = 'Data_files/Semester_Stats/Fine_Box_stats_Semester_update_'
     updates = get_file_quantity('Data_files/Semester_Stats/')
-    print("Updates: " + str(updates))
     semester_dataframe = pd.read_csv(file_name_yearly + str(updates - 1) + '.csv', sep=",")
-    print(df)
-    print(semester_dataframe)
-    print(df['Total fee'][0])
-    print(semester_dataframe['Total fee'][0])
     if answer == "y":
         # open the file in the write mode
         with open(file_name_yearly + str(updates) + '.csv', 'w') as f:
@@ -129,7 +120,6 @@ def update_monthly_data(df, answer):
     headers = ['Room nr.', 'Total fee', 'Kitchen duty', 'Minors', 'Kitchen cleaning', 'Wok pan/small pot', 'Toaster']
     file_name_monthly = 'Data_files/Monthly_Stats/Fine_Box_stats_Month_update_'
     updates = get_file_quantity('Data_files/Monthly_Stats/')
-    print("Updates: " + str(updates))
     monthly_dataframe = pd.read_csv(file_name_monthly + str(updates - 1) + '.csv', sep=",")
     # open the file in the write mode
     if answer == "y":
