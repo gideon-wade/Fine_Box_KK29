@@ -20,11 +20,13 @@ def histogram_totals(df, isWeekly, is_Monthly):
     plt.xlabel('Room numbers')
     if not isWeekly and not is_Monthly:
         plt.title("Overview of the Semester")
+        plt.savefig("plots/plotsSemX/residents'_payments.png")
     elif not isWeekly and is_Monthly:
         plt.title("Overview of the Month")
+        plt.savefig("plots/plotsMonthX/residents'_payments.png")
     else:
         # PATH TO YOUR /plotWeekX DIRECTORY
-        plt.savefig("plotsWeekX/residents'_payments.png")
+        plt.savefig("plots/plotsWeekX/residents'_payments.png")
     plt.show()
     histogram_most_frequent(df, isWeekly, is_Monthly)
 
@@ -47,13 +49,15 @@ def histogram_most_frequent(df, isWeekly, is_Monthly):
     plt.xticks(rotation=13)
     if not isWeekly and not is_Monthly:
         plt.title("Overview of the Semester")
+        plt.savefig("plots/plotsSemX/most_frequent.png")
         plt.show()
     elif not isWeekly and is_Monthly:
         plt.title("Overview of the Month")
+        plt.savefig("plots/plotsMonthX/most_frequent.png")
         plt.show()
     else:
         # PATH TO YOUR /plotWeekX DIRECTORY
-        plt.savefig("plotsWeekX/most_frequent.png")
+        plt.savefig("plots/plotsWeekX/most_frequent.png")
         plt.show()
         print("Want to add this data to the semester and monthly data?")
         answer = input("Type in 'y' to add and 'n' to not add: ")
